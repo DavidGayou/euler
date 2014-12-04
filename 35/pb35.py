@@ -1,16 +1,13 @@
+import array
+
+primes = array.array('b', [True]*1000*1000)
 
 
-primes = [2,3]
-
-##ONLY WORK IF RUN IN ORDER
-def is_prime(n):
-    for p in primes:
-        if p*p > n:
-            break
-        if n % p == 0:
-            return False
-    primes.append(n)
-    return True
+def sieve(limit):
+    for i in range(2,limit):
+        if primes[i]:
+            for j in range(i*i, limit,i):
+                primes[j]=False
 
 
 def get_circulars(n):
@@ -36,24 +33,26 @@ def get_circulars(n):
     return permutations
 
 
-#Sieves
-for i in range(4,1000000):
-    is_prime(i)
-    #if is_prime(i) :
-    #    print i
+limit = 1000000
+sieve(limit)
 
-print "Primes computed : %d" % len(primes)
-#print primes
+#mycnt=0
+#myprimes = []
+#for t in range(2,limit):
+#    if primes[t]:
+#        mycnt+=1
+#        myprimes.append(t)
+
+#print "Primes computed : %d" % mycnt
 
 results = []
-count = 0
-for p in primes:
+for p in range(2,limit):
+    if not primes[p]:
+        continue
+
     isOk = True
-    count+=1
-    if count %1000==0:
-        print "%d - %d"%(count, p)
     for c in get_circulars(p):
-        if c not in primes:
+        if not primes[c]:
             isOk = False
             break;
     if isOk:
